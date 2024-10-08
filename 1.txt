@@ -1,0 +1,361 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//practical 5
+package Practical5;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+public class Prac5 {
+	public static void main(String[] args) {
+		System.setProperty("webdriver.gecko.driver","C:\\Users\\Kyo\\Desktop\\geckodriver.exe");
+		WebDriver driver=new FirefoxDriver();
+		driver.navigate().to("https://www.youtube.com");
+		driver.manage().window().maximize();
+		}
+}
+
+
+// practical 8
+
+import jxl.*;
+import jxl.write.*;
+import jxl.write.Number;
+import java.io.*;
+import java.util.Locale;
+
+
+public class Prac5 {
+	public static void main(String[] args)throws IOException, WriteException {
+		int r = 0 , c = 0;
+		String header[] = {"Student Name ","Subject 1","Subject 2","Subject 3","Total"};
+		String sName[] = {"Pranav","Ankur","Aniket","Piyush","Nikhil","Parvati","Shivraj","Yash","Rohit","Rahul"};
+		int marks[] = {85,90,81,82,74,76,89,92,96,85};
+		File file = new File("C:\\Users\\Kyo\\Desktop\\student.xls");
+		WorkbookSettings wbSettings = new WorkbookSettings();
+		wbSettings.setLocale(new Locale("en","EN"));
+		WritableWorkbook workbook = Workbook.createWorkbook(file,wbSettings);
+		workbook.createSheet("Report", 0);
+		WritableSheet excelSheet = workbook.getSheet(0);
+		for(r = 0 ; r < 1 ; r++ ) {
+			for(c = 0 ; c < header.length ; c++ ) {
+				Label label = new Label(c,r,header[c]);
+				excelSheet.addCell(label);
+			}
+		}
+		for(r = 1 ; r <= sName.length ; r++ ) {
+				Label label = new Label(0, r, sName[r-1]);
+				excelSheet.addCell(label);
+		}
+		for(r = 1 ; r <= sName.length ; r++) {
+			for(c = 1; c < 4 ; c++ ) {
+				Number num = new Number(c, r , marks[r-1]);
+				excelSheet.addCell(num);
+			}
+		}
+		for(r = 1 ; r <= sName.length ; r++) {
+			int total = marks[r-1] * 3;
+			Number num = new Number(4, r, total);
+			excelSheet.addCell(num);
+		}
+		workbook.write();
+		workbook.close();
+		System.out.println("Excel File Created");
+	}
+}
+
+// practical 9
+
+import java.io.File;
+import jxl.Cell;
+import jxl.Sheet;
+import jxl.Workbook;
+
+
+public class Prac5{
+
+    public static void main(String[] args) {
+        try {
+            // Load workbook from the specified file
+            Workbook workbook = Workbook.getWorkbook(new File("C:\\Users\\Kyo\\Desktop\\student.xls"));
+            // Get the first sheet in the workbook
+            Sheet sheet = workbook.getSheet(0);
+            int rows = sheet.getRows();
+            int columns = sheet.getColumns();
+            int count = 0;
+
+            // Loop through each row, starting from 1 to skip header row
+            for (int i = 1; i < rows; i++) {
+                boolean scored60OrMore = false;
+
+                // Loop through the specific columns (subjects)
+                for (int j = 2; j < 4; j++) { // Assuming subjects are in columns 2 and 3
+                    Cell cell = sheet.getCell(j, i);
+                    String content = cell.getContents();
+
+                    try {
+                        // Attempt to parse cell content as an integer score
+                        int score = Integer.parseInt(content);
+                        if (score >= 60) {
+                            scored60OrMore = true;
+                            break; // If score is >= 60 in any subject, stop checking further
+                        }
+                    } catch (NumberFormatException e) {
+                        // Handle non-integer cell content (e.g., empty cells, text, etc.)
+                        System.out.println("Invalid score format in row " + (i + 1) + ", column " + (j + 1) + ": " + content);
+                    }
+                }
+
+                // Increment the count if student scored 60 or more in any subject
+                if (scored60OrMore) {
+                    count++;
+                }
+            }
+
+            // Print the result
+            System.out.println("Number of students who scored 60 or more in any subject: " + count);
+
+            // Close the workbook
+            workbook.close();
+
+        } catch (Exception e) {
+            // Print any other exceptions
+            e.printStackTrace();
+        }
+    }
+}
+
+// practical 10
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+
+
+public class Pract5{
+
+	public static void main(String[] args) {
+		System.setProperty("webdriver.gecko.driver","C:\\Users\\Kyo\\Desktop\\geckodriver.exe");		
+        FirefoxOptions options = new FirefoxOptions();
+        options.setBinary("C:\\Program Files\\Mozilla Firefox\\firefox.exe");
+        WebDriver driver=new FirefoxDriver();
+		try
+		{
+			driver.navigate().to("https://www.youtube.com/feed/trending");
+			driver.manage().window().maximize();
+			java.util.List<WebElement> elements = driver.findElements(By.cssSelector("*"));
+            // Print the total number of elements
+            System.out.println("Page Url : https://www.youtube.com/feed/trending\nTotal number of objects on the page: " + elements.size());
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			driver.quit();
+		}
+}
+}
+
+
